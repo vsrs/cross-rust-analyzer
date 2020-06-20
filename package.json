@@ -1,7 +1,7 @@
 {
     "name": "cross-rust-analyzer",
     "publisher": "vsrs",
-    "private":true,
+    "private": true,
     "repository": {
         "url": "https://github.com/vsrs/cross-rust-analyzer.git",
         "type": "git"
@@ -10,7 +10,8 @@
     "description": "cross support for the rust-analyzer",
     "license": "MIT OR Apache-2.0",
     "keywords": [
-        "rust", "cross"
+        "rust",
+        "cross"
     ],
     "version": "0.0.1",
     "engines": {
@@ -20,27 +21,46 @@
         "Programming Languages"
     ],
     "activationEvents": [
-        "onCommand:cross-rust-analyzer.createCargoTask"
+        "onLanguage:rust",
+        "onCommand:cross-rust-analyzer.buildShellExecution"
     ],
-    "main": "./out/extension.js",
+    "main": "./out/src/extension.js",
     "contributes": {
         "commands": [
             {
-                "command": "cross-rust-analyzer.createCargoTask",
-                "title": "Hello World"
+                "command": "cross-rust-analyzer.buildShellExecution",
+                "title": "invisible"
+            },
+            {
+                "command": "cross-rust-analyzer.pickTarget",
+                "title": "Select cross target",
+                "category": "Rust Analyzer"
             }
         ],
         "menus": {
             "commandPalette": [
                 {
-                    "command": "cross-rust-analyzer.createCargoTask",
+                    "command": "cross-rust-analyzer.buildShellExecution",
                     "when": "never"
                 }
             ]
+        },
+        "configuration": {
+            "title": "Cross for Rust Analyzer",
+            "properties": {
+                "cross-rust-analyzer.target": {
+                    "type": [
+                        "null",
+                        "string"
+                    ],
+                    "default": null,
+                    "description": "Cross target"
+                }
+            }
         }
     },
     "scripts": {
-        "vscode:prepublish": "npm run compile",
+        "vscode:prepublish": "npm run lint && npm run compile",
         "compile": "tsc -p ./",
         "lint": "tsfmt --verify && eslint src --ext ts",
         "watch": "tsc -watch -p ./"
